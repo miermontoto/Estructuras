@@ -1,6 +1,5 @@
 .metadata
 .settings
-.project
 .classpath
 *.class
 *.html
