@@ -1,0 +1,10 @@
+.metadata
+.settings
+.project
+.classpath
+*.class
+*.html
+*.css
+*.js
+doc
+package-info.java
