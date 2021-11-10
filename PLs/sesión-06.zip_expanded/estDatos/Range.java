@@ -123,6 +123,8 @@ public class Range<E> implements Iterable<E> {
 		}
 		return this.length == other.length;
 	}
+	
+
 
 	@Override
 	public Iterator<E> iterator() {
