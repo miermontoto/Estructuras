@@ -33,20 +33,33 @@ public class App {
 		FiniteSet<Character> c1 = new FiniteSet<>(rc, h1.toArray(new Character[0]));
 		FiniteSet<Character> c2 = new FiniteSet<>(rc, h2.toArray(new Character[0]));
 		FiniteSet<Character> c3 = new FiniteSet<>(c1);
+		FiniteSet<Character> c4 = new FiniteSet<>(c3);
+		FiniteSet<Character> c5 = new FiniteSet<>(c4);
 		mostrarConjunto(c1);
 		mostrarConjunto(c2);
 		mostrarConjunto(c3);
 		System.out.printf("¿c1 == c3? %s%n", c1.equals(c3));
 		System.out.printf("¿c2 == c3? %s%n", c2.equals(c3));
 		
-
+		// Unión
+		c3.addAll(c2);
+		System.out.print("c3 = c1 unión c2: "); mostrarConjunto(c3);
+		// Intersección
+		c4.retainAll(c2);
+		System.out.print("c4 = c1 intersección c2: "); mostrarConjunto(c4);
+		// Diferencia
+		c5.removeAll(c2);
+		System.out.print("c5 = c1 diferencia c2: "); mostrarConjunto(c5);
+		
+		System.out.printf("¿c1 subconjunto c3?: %s%n", c3.containsAll(c1));
+		System.out.printf("¿c4 subconjunto c1?: %s%n", c1.containsAll(c4));
+		System.out.printf("¿c5 subconjunto c1?: %s%n", c1.containsAll(c5));
 	}
 	
 	public static <E> void  mostrarConjunto(FiniteSet<E> s) {
-		System.out.print("Contenido del conjunto: ");
-		int i = 0;
-		for(E e : s) System.out.printf("%s ", e); i++;
-		System.out.printf("(%d elementos)%n", i);
+		//System.out.print("Contenido del conjunto: ");
+		for(E e : s) System.out.printf("%s ", e);
+		System.out.printf("(%d elementos)%n", s.size());
 	}
 
 }

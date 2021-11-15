@@ -16,7 +16,7 @@ import java.util.NoSuchElementException;
 public class FiniteSet<E> extends AbstractSet<E> {
 	private Range<E> universal;		// conjunto universal
 	private List<Boolean> vbool;	// secuencia de booleanos
-	private int numItems;			// nÃºmero de elementos del conjunto
+	private int numItems;			// número de elementos del conjunto
 	
 	/**
 	 * Crea un conjunto finito para el rango especificado
@@ -26,13 +26,14 @@ public class FiniteSet<E> extends AbstractSet<E> {
 	 */
 	@SafeVarargs
 	public FiniteSet(Range<E> r, E...items) {
+		universal = r;
 		vbool = new ArrayList<>();
 		numItems = 0;
 		
 		// primero se rellena de valores falsos.
-		for(int i = 0; i < r.size(); i++) vbool.set(i, false);
+		for(int i = 0; i < r.size(); i++) vbool.add(false);
 		// una vez que se comprueba que el item exista, se cambia su valor a true.
-		for(E e : items) vbool.set(r.eToInt(e), true); numItems++;
+		for(E e : items) {vbool.set(r.eToInt(e), true); numItems++;}
 	}
 	
 	/**
@@ -63,8 +64,12 @@ public class FiniteSet<E> extends AbstractSet<E> {
 	@Override
 	public boolean add(Object o) {
 		if(((E) o).getClass().equals(universal.iterator().next().getClass())) {
-			vbool.set(universal.eToInt((E) o), true);
-			numItems++;
+			int index = universal.eToInt((E) o);
+			if(!vbool.get(index)) {
+				vbool.set(index, true);
+				numItems++;
+			}
+			
 			return true;
 		}
 		return false;
@@ -72,8 +77,9 @@ public class FiniteSet<E> extends AbstractSet<E> {
 	
 	@Override
 	public boolean remove(Object e) {
-		if(this.contains(e)) {
-			vbool.set(universal.eToInt((E) e), false);
+		int index = universal.eToInt((E) e);
+		if(vbool.get(index)) {
+			vbool.set(index, false);
 			numItems--;
 			return true;
 		}
@@ -81,9 +87,26 @@ public class FiniteSet<E> extends AbstractSet<E> {
 		
 	}
 	
+	/*public boolean addAll(FiniteSet<? extends E> f) {
+		boolean check = false;
+		for(E e : f) if(!vbool.get(universal.eToInt(e))) {
+			vbool.set(universal.eToInt(e), true);
+			numItems++;
+		}
+		return check;
+	}*/
+
+	
+	@Override
+	public boolean equals(Object e) {
+		if(!(e instanceof FiniteSet<?>)) return false;
+		return this.vbool.equals(((FiniteSet<? extends E>) e).vbool) &&
+				this.universal.equals(((FiniteSet<? extends E>) e).universal); 
+	}
+	
 	class IteratorImp implements Iterator<E> {
 		int remainingTrueItems = numItems;
-		int currentItemIndex = 0;
+		int currentItemIndex = -1;
 		int lastReturnedItemIndex;
 		Iterator<E> itr = universal.iterator();
 
@@ -96,8 +119,13 @@ public class FiniteSet<E> extends AbstractSet<E> {
 		public E next() {
 			if(!hasNext()) throw new NoSuchElementException();
 			
-			E temp = itr.next();
-			while(!vbool.get(currentItemIndex)) {temp = itr.next(); currentItemIndex++;}
+			E temp;
+			
+			do {
+				temp = itr.next();
+				currentItemIndex++;
+			} while(!vbool.get(currentItemIndex));
+			
 			lastReturnedItemIndex = currentItemIndex;
 			remainingTrueItems--;
 			return temp;
