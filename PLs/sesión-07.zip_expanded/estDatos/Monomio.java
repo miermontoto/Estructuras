@@ -79,7 +79,7 @@ public class Monomio {
 	public Monomio(Monomio m) {
 		//this(String.format("%f%s", m.getCoeficiente(), m.toString()));
 		this.coeficiente = m.coeficiente;
-		this.data = new TreeMap<>(m.data);
+		this.data = m.data;
 	}
 
 	public int grado() {
