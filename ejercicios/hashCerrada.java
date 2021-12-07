@@ -36,15 +36,28 @@ public class hashCerrada {
   }
 
   public boolean add(E x) {
-    int pos = hash(x);
-    int i = 1;
-    while(state[pos] != 0) {
-      rehash(x, i);
-      i++;
-    }
-    data[pos] = x;
+    if(data.contains(x)) return false;
+    int pos = firstEqualOrErasedOrEmpty(e);
+    else data[pos] = x;
+    if(status[pos] == 1) numberOfDeletions--;
+    status[pos] == 2;
     numberOfElements++;
     if(loadFactor() > LOAD_FACTOR_LIMIT) resize();
+    return true;
+  }
+
+  public Iterator<E> iterator() {
+    return new IteratorImp<E>();
+  }
+
+  private int firstEqualOrErasedOrEmpty(E e) {
+    int pos = rehash(e, 0); // == hash(e)
+    int i = 1;
+    while(i < data.length) {
+      if(status[pos] == 2 && data[pos] == e || status[pos] == 0 || status[pos] == 1) return pos;
+      else {pos = rehash(e, i); i++;}}
+    }
+    throw new RuntimeException("Superado límite de búsqueda de elemento.");
   }
 
   private int rehash(E x, int i) {
@@ -54,15 +67,28 @@ public class hashCerrada {
   public E get(int x) {return 0 <= x && x < data.length ? data[x] : null;}
 
   public boolean contains(E e) {
-    int pos = firstEqualOrEmpty(e);
+    try {
+      int pos = firstEqualOrEmpty(e);
+      return status[pos] == 2;
+    } catch (Exception abc) {return false;}
 
+  }
+
+  private int firstErasdOrEmpty(E e) {
+    int pos = hash(e);
+    int i = 1;
+    while(i < data.length) {
+      if(status[pos] != 2) return pos;
+      else {pos = rehash(e, i); i++;}}
+    }
+    throw new RuntimeException("Superado límite de búsqueda de elemento.");
   }
 
   private int firstEqualOrEmpty(E e) {
     int pos = hash(e);
     int i = 1;
-    while(i <= data.length) {
-      if(status[pos] == 1 && data[pos] == e || status[pos] == 0) return pos;
+    while(i < data.length) {
+      if(status[pos] == 2 && e.equals(data[pos]) || status[pos] == 0) return pos;
       else {pos = rehash(e, i); i++;}}
     }
     throw new RuntimeException("Superado límite de búsqueda de elemento.");
@@ -71,11 +97,27 @@ public class hashCerrada {
   public boolean remove(E e) {
     int pos = firstEqualOrEmpty(e);
     if(status[pos] != 0) {
-        status[pos] = -1;
+        status[pos] = 1;
         numberOfElements--;
         numberOfDeletions++;
         return true;
     }
     return false;
+  }
+
+  class IteratorImp implements Iterator<E> {
+    int pos = 0;
+    int readElements = 0;
+
+    public boolean hasNext() {
+      return readElements < numberOfElements;
+    }
+
+    public E next() {
+      if(!hasNext()) return new UnsupportedOperation();
+      while(status[pos] != 2) pos++;
+      readElements++;
+      return data[pos];
+    }
   }
 }
