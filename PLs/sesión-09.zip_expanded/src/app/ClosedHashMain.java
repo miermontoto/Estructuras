@@ -2,16 +2,16 @@ package app;
 
 import java.util.*;
 
-import estDatos.OpenHash;
+import estDatos.ClosedHash;
 
-public class OpenHashMain {
+public class ClosedHashMain {
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		OpenHash<Integer> t=new OpenHash<Integer>();
+		ClosedHash<Integer> t=new ClosedHash<Integer>();
 		t.add(7); t.add(15);t.add(34);
 		t.add(4);t.add(19);t.add(7);t.add(7);t.add(7);
 		System.out.println("t: "+t);
@@ -25,7 +25,7 @@ public class OpenHashMain {
 		t.add(25);t.add(30);t.add(4);t.add(33);t.add(44);t.add(66);t.add(99);
 		System.out.println("t: "+t);
         //prueba de insercion y redimension con cadenas de caracteres
-		OpenHash<String> ts=new OpenHash<String>(7);
+		ClosedHash<String> ts=new ClosedHash<String>(7);
 		ts.add("Pepe"); ts.add("Ppee");ts.add("Eva");ts.add("Lola");
 		ts.add("Jaime");ts.add("Pedro");
 		ts.add("Ana");
@@ -34,7 +34,7 @@ public class OpenHashMain {
 		
 		System.out.println("******************************************************");
 		//prueba del constructor de copia
-		OpenHash<String> ts2=new OpenHash<String>(ts);
+		ClosedHash<String> ts2=new ClosedHash<String>(ts);
 		System.out.println("ts2: "+ts2);
 		
 		ts2.remove("Lola");
@@ -45,7 +45,7 @@ public class OpenHashMain {
 		Integer [] a={10,25,33,40,54,69,70};
 		TreeSet<Integer> s=new TreeSet<Integer>();
 		s.addAll(Arrays.asList(a));
-		OpenHash<Integer> ti=new OpenHash<Integer>(9);
+		ClosedHash<Integer> ti=new ClosedHash<Integer>(9);
 		ti.addAll(s);
 		System.out.println("ti: "+ti);		
 		
