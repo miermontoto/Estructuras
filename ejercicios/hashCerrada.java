@@ -1,6 +1,6 @@
 public class hashCerrada {
   private E[] data;
-  private int[] state; // 0 = vacío, 1 = ocupado, -1 = borrado.
+  private int[] state; // 0 = vacío, 1 = borrado, 2 = ocupado.
   public static final int DEFAULT_CAPACITY = 7;
   public static final double DEFAULT_LOAD_FACTOR_LIMIT = 0.5f;
   private static double loadFactorLimit;
@@ -12,11 +12,11 @@ public class hashCerrada {
   }
 
   public hashCerrada(int c) {
-    this(i, DEFAULT_LOAD_FACTOR_LIMIT);
+    this(c, DEFAULT_LOAD_FACTOR_LIMIT);
   }
 
   public hashCerrada(double lf) {
-    this(DEFAULT_CAPACITY, d);
+    this(DEFAULT_CAPACITY, lf);
   }
 
   public hashCerrada(int c, double lf) {
@@ -36,11 +36,11 @@ public class hashCerrada {
   }
 
   public boolean add(E x) {
-    if(data.contains(x)) return false;
+    if(this.contains(x)) return false;
     int pos = firstEqualOrErasedOrEmpty(e);
-    else data[pos] = x;
+    data[pos] = x;
     if(status[pos] == 1) numberOfDeletions--;
-    status[pos] == 2;
+    status[pos] = 2;
     numberOfElements++;
     if(loadFactor() > LOAD_FACTOR_LIMIT) resize();
     return true;
@@ -55,7 +55,7 @@ public class hashCerrada {
     int i = 1;
     while(i < data.length) {
       if(status[pos] == 2 && data[pos] == e || status[pos] == 0 || status[pos] == 1) return pos;
-      else {pos = rehash(e, i); i++;}}
+      else {pos = rehash(e, i); i++;}
     }
     throw new RuntimeException("Superado límite de búsqueda de elemento.");
   }
@@ -74,12 +74,12 @@ public class hashCerrada {
 
   }
 
-  private int firstErasdOrEmpty(E e) {
+  private int firstErasedOrEmpty(E e) {
     int pos = hash(e);
     int i = 1;
     while(i < data.length) {
       if(status[pos] != 2) return pos;
-      else {pos = rehash(e, i); i++;}}
+      else {pos = rehash(e, i); i++;}
     }
     throw new RuntimeException("Superado límite de búsqueda de elemento.");
   }
@@ -89,7 +89,7 @@ public class hashCerrada {
     int i = 1;
     while(i < data.length) {
       if(status[pos] == 2 && e.equals(data[pos]) || status[pos] == 0) return pos;
-      else {pos = rehash(e, i); i++;}}
+      else {pos = rehash(e, i); i++;}
     }
     throw new RuntimeException("Superado límite de búsqueda de elemento.");
   }
@@ -114,7 +114,7 @@ public class hashCerrada {
     }
 
     public E next() {
-      if(!hasNext()) return new UnsupportedOperation();
+      if(!hasNext()) throw new UnsupportedOperationException();
       while(status[pos] != 2) pos++;
       readElements++;
       return data[pos];
