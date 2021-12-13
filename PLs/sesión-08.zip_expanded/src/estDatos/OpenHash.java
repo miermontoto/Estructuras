@@ -30,6 +30,7 @@ public class OpenHash<E> extends AbstractSet<E> {
 		table = new ArrayList<>();
 		elementList = new LinkedList<>();
 		elements = 0;
+		for(int i = 0; i < initialCapacity; i++) table.add(i, new TreeSet<>());
 	}
 
 	public OpenHash(OpenHash<E> ts) {
@@ -77,6 +78,7 @@ public class OpenHash<E> extends AbstractSet<E> {
 		ArrayList<TreeSet<E>> temp = new ArrayList<>();
 		tableSize *= 2;
 		while(!esPrimo(tableSize)) tableSize++;
+		for(int i = 0; i < tableSize; i++) temp.add(i, new TreeSet<E>());
 		for(E e : elementList) temp.get(hash(e)).add(e);
 		table = temp;
 	}
@@ -85,12 +87,6 @@ public class OpenHash<E> extends AbstractSet<E> {
 		if(x == 1) return true;
 		for(int i = 2; i <= x / 2; i++) if(x % i == 0) return false;
 		return true;
-	}
-
-	@Override
-	public Iterator<E> iterator() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -105,6 +101,11 @@ public class OpenHash<E> extends AbstractSet<E> {
 			for(E e : table.get(i)) res += String.format("%s ", e);
 		}
 		return res;
+	}
+	
+	@Override
+	public Iterator<E> iterator() {
+		return elementList.iterator();
 	}
 
 }
