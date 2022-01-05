@@ -1,7 +1,5 @@
 package app;
 
-import java.util.*;
-
 import estDatos.ClosedHash;
 
 public class ClosedHashMain {
