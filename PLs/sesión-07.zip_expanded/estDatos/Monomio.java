@@ -78,8 +78,9 @@ public class Monomio {
 	
 	public Monomio(Monomio m) {
 		//this(String.format("%f%s", m.getCoeficiente(), m.toString()));
+		this();
 		this.coeficiente = m.coeficiente;
-		this.data = m.data;
+		data.putAll(m.data);
 	}
 
 	public int grado() {
@@ -117,7 +118,7 @@ public class Monomio {
 		if(!m1.semejanteAlternativo(m2)) throw new UnsupportedOperationException();
 		Monomio r = new Monomio();
 		r.coeficiente = m1.coeficiente + m2.coeficiente;
-		r.data = new TreeMap<>(m1.data);
+		r.data.putAll(m1.data); // Ambos literales son iguales.
 		return r;
 	}
 	
@@ -137,7 +138,7 @@ public class Monomio {
 	
 	public static Monomio potenciaAlternativa(Monomio m, int x) {
 		Monomio r = new Monomio();
-		r.data = new TreeMap<>(m.data);
+		r.data.putAll(m.data);
 		r.coeficiente = Math.pow(m.coeficiente, x);
 		for(Map.Entry<Character, Integer> pair : r.data.entrySet()) r.data.put(pair.getKey(), pair.getValue() * x);
 		return r;
@@ -150,7 +151,7 @@ public class Monomio {
 	public static Monomio productoAlternativo(Monomio m1, Monomio m2) {
 		Monomio r = new Monomio();
 		r.coeficiente = m1.coeficiente * m2.coeficiente;
-		r.data = new TreeMap<>(m1.data);
+		r.data.putAll(m1.data);
 		for(Map.Entry<Character, Integer> pair : m2.data.entrySet()) {
 			Character k = pair.getKey();
 			Integer v = pair.getValue();

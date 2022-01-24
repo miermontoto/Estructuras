@@ -8,8 +8,8 @@ import java.util.List;
 
 public class PriorityQueueList<E> extends AbstractQueue<E> {
 	
-	List<E> queue = new LinkedList<>();
-	Comparator<? super E> cmp = null;
+	List<E> queue;
+	Comparator<? super E> cmp;
 	
 	@SuppressWarnings("unchecked")
 	private int compare(final E temp, final E temp2) {
@@ -20,10 +20,8 @@ public class PriorityQueueList<E> extends AbstractQueue<E> {
 		return cmp == null ? ((Comparable<E>) temp).compareTo(temp2) : this.cmp.compare(temp, temp2);
 	}
 	
-	public PriorityQueueList() {} // sin comparator
-	public PriorityQueueList(Comparator <? super E> c) {cmp = c;}
-	
-	
+	public PriorityQueueList() {queue = new LinkedList<>(); cmp = null;} // sin comparator
+	public PriorityQueueList(Comparator <? super E> c) {this(); cmp = c;}
 
 	@Override
 	public boolean offer(E e) {
