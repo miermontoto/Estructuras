@@ -41,7 +41,9 @@ public class Graph<Vertex> {
   }
 
   public boolean addEdge(Vertex to, Vertex from, double weight) {
-    if(!hasVertex(to) || !hasVertex(from) || hasEdge(to, from) || from.equals(to)) return false;
+    if(hasEdge(to, from) || from.equals(to)) return false;
+    if(addVertex(to)) numVertex++;
+    if(addVertex(from)) numVertex++;
     adjList.get(from).put(to, weight));
     numEdges++;
     return true;
